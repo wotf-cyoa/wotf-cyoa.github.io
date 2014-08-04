@@ -190,7 +190,8 @@ var handleFileLoad = function() {
     socket.emit('fileLoad', { input: currentFileContent });
 };
 
-var socket = io('http://localhost:8888/ruby'),
+//var socket = io('http://localhost:8888/ruby'),
+var socket = io('http://wotf-cyoa.herokuapp.com:80/ruby'),
     terminal = document.getElementById('terminal'),
     terminalOutputs = document.getElementById('terminal-outputs'),
     terminalInput = document.getElementById('terminal-input'),
