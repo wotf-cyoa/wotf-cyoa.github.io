@@ -138,7 +138,8 @@ var handleFileSave = function() {
     addToTerminal('Saving game code...', 'status');
 };
 
-var socket = io('http://localhost:8888/ruby'),
+//var socket = io('http://localhost:8888/ruby'),
+var socket = io.connect('http://wotf-cyoa.herokuapp.com:80/ruby'),
     terminal = document.getElementById('terminal'),
     terminalOutputs = document.getElementById('terminal-outputs'),
     terminalInput = document.getElementById('terminal-input'),
