@@ -1,0 +1,272 @@
+/*
+ * Eric Meyer's Reset CSS v2.0 (http://meyerweb.com/eric/tools/css/reset/)
+ * http://cssreset.com
+ */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline; }
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block; }
+
+body {
+  line-height: 1; }
+
+ol, ul {
+  list-style: none; }
+
+blockquote, q {
+  quotes: none; }
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: "";
+  content: none; }
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0; }
+
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  color: white;
+  background-color: #333333;
+  overflow: hidden; }
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box; }
+
+#container {
+  overflow: hidden; }
+
+#title {
+  font-family: "La Belle Aurore", cursive;
+  font-size: 2.5em;
+  text-align: center;
+  line-height: 100px;
+  color: #c94d5b; }
+
+h1.label {
+  font-family: "Monaco", "Menlo", "Ubuntu Mono", "Consolas", "source-code-pro", monospace;
+  font-size: 16px;
+  text-align: center;
+  line-height: 40px; }
+
+button {
+  display: inline-block;
+  margin-bottom: 0;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.4;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background-image: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  color: #333333;
+  background-color: white;
+  border-color: #5d5d5d; }
+
+#message-banner {
+  text-align: center; }
+
+#message-banner span {
+  display: block;
+  width: 100%; }
+
+span.success,
+span.warning,
+span.info,
+span.danger {
+  padding: 16px;
+  border: 1px solid transparent; }
+
+span.success {
+  color: #468847;
+  background-color: #dff0d8;
+  border-color: #d6e9c6; }
+
+span.warning {
+  color: #c09853;
+  background-color: #fcf8e3;
+  border-color: #fbeed5; }
+
+span.info {
+  color: #31708f;
+  background-color: #d9edf7;
+  border-color: #bce8f1; }
+
+span.danger {
+  color: #a94442;
+  background-color: #f2dede;
+  border-color: #ebccd1; }
+
+#terminal {
+  position: absolute;
+  left: 0;
+  right: 62%;
+  top: 100px;
+  bottom: 200px;
+  border-top: 2px solid #5d5d5d;
+  border-left: 2px solid #5d5d5d;
+  border-right: 1px solid #5d5d5d;
+  font-family: "Monaco", "Menlo", "Ubuntu Mono", "Consolas", "source-code-pro", monospace;
+  font-size: 15px; }
+
+#terminal h1 {
+  border-bottom: 1px solid #5d5d5d; }
+
+#terminal-content {
+  padding: 8px 14px;
+  position: absolute;
+  top: 41px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow-y: auto; }
+
+#terminal-input {
+  width: 100%;
+  margin: 0;
+  padding: 6px 0 6px 27px;
+  color: white;
+  font-family: "Monaco", "Menlo", "Ubuntu Mono", "Consolas", "source-code-pro", monospace;
+  font-size: 100%;
+  line-height: 1.4;
+  background-color: #333333;
+  border: none; }
+
+#terminal-input:focus,
+#terminal-input:active {
+  outline: none; }
+
+#terminal-prompt {
+  padding: 0;
+  display: block;
+  margin-top: -24px;
+  font-size: 100%; }
+
+#terminal .outputs {
+  padding: 6px 0;
+  font-size: 100%;
+  line-height: 1.4; }
+
+#terminal .outputs-status {
+  color: #77e07a; }
+
+#terminal .outputs-input {
+  color: #7a77e0; }
+
+#terminal .outputs-input:before {
+  content: ">> "; }
+
+#terminal .outputs-output {
+  color: #e6db74; }
+
+#terminal .outputs-error {
+  color: #e07a77; }
+
+#help {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 62%;
+  height: 200px;
+  border-right: 1px solid #5d5d5d;
+  border-left: 2px solid #5d5d5d;
+  border-bottom: 2px solid #5d5d5d; }
+
+#help img,
+#help ul {
+  padding: 8px 14px;
+  float: left; }
+
+#help img {
+  width: 35%;
+  height: auto; }
+
+#help ul {
+  padding: 34px 12px;
+  width: 65%; }
+
+#help li {
+  padding: 4px 0;
+  line-height: 1.4; }
+
+#help button {
+  padding: 2px 5px;
+  margin: 0 5px;
+  margin-bottom: 1px;
+  font-size: 12px; }
+
+#help span.code {
+  color: #c94d5b;
+  padding: 0 5px; }
+
+#source {
+  position: absolute;
+  left: 38%;
+  right: 0;
+  top: 100px;
+  bottom: 0;
+  border-top: 2px solid #5d5d5d;
+  border-left: 1px solid #5d5d5d;
+  border-right: 2px solid #5d5d5d;
+  border-bottom: 2px solid #5d5d5d; }
+
+#source .source-file-content {
+  background: #333333;
+  position: absolute;
+  top: 40px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-top: 1px solid #5d5d5d; }
+
+#source-actions {
+  float: right;
+  margin-top: -37px;
+  margin-right: 12px; }
+
+#source-actions button {
+  padding: 5px 12px; }
+
+#source-actions button:hover {
+  color: #333333;
+  background-color: #d9d9d9;
+  border-color: #373737; }
+
+#game-rb-editor {
+  font-size: 15px; }
+
+
+/*# sourceMappingURL=app.css.map*/
