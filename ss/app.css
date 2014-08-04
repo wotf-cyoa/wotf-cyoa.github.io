@@ -135,7 +135,7 @@ span.danger {
   left: 0;
   right: 62%;
   top: 100px;
-  bottom: 200px;
+  bottom: 160px;
   border-top: 2px solid #5d5d5d;
   border-left: 2px solid #5d5d5d;
   border-right: 1px solid #5d5d5d;
@@ -200,7 +200,7 @@ span.danger {
   bottom: 0;
   left: 0;
   right: 62%;
-  height: 200px;
+  height: 160px;
   border-right: 1px solid #5d5d5d;
   border-left: 2px solid #5d5d5d;
   border-bottom: 2px solid #5d5d5d; }
@@ -211,12 +211,12 @@ span.danger {
   float: left; }
 
 #help img {
-  width: 35%;
+  width: 165px;
   height: auto; }
 
 #help ul {
-  padding: 34px 12px;
-  width: 65%; }
+  padding: 10px 12px 10px 12px;
+  width: 310px; }
 
 #help li {
   padding: 4px 0;
@@ -267,6 +267,34 @@ span.danger {
 
 #game-rb-editor {
   font-size: 15px; }
+
+@media all and (max-width: 1260px) {
+  #help {
+    height: 130px; }
+
+  #terminal {
+    bottom: 130px; }
+
+  #help img {
+    width: 140px; }
+
+  #help ul {
+    width: 220px;
+    font-size: 12px;
+    padding: 5px 6px; } }
+@media all and (max-width: 960px) {
+  html,
+  body {
+    overflow-x: auto;
+    width: 960px; }
+
+  #terminal,
+  #help {
+    width: 365px; }
+
+  #source {
+    width: 595px;
+    left: 365px; } }
 
 
 /*# sourceMappingURL=app.css.map*/

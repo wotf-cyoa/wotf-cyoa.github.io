@@ -90,6 +90,55 @@
   globals.require.list = list;
   globals.require.brunch = true;
 })();
+(function() {
+  var WebSocket = window.WebSocket || window.MozWebSocket;
+  var br = window.brunch = (window.brunch || {});
+  var ar = br['auto-reload'] = (br['auto-reload'] || {});
+  if (!WebSocket || ar.disabled) return;
+
+  var cacheBuster = function(url){
+    var date = Math.round(Date.now() / 1000).toString();
+    url = url.replace(/(\&|\\?)cacheBuster=\d*/, '');
+    return url + (url.indexOf('?') >= 0 ? '&' : '?') +'cacheBuster=' + date;
+  };
+
+  var reloaders = {
+    page: function(){
+      window.location.reload(true);
+    },
+
+    stylesheet: function(){
+      [].slice
+        .call(document.querySelectorAll('link[rel="stylesheet"]'))
+        .filter(function(link){
+          return (link != null && link.href != null);
+        })
+        .forEach(function(link) {
+          link.href = cacheBuster(link.href);
+        });
+    }
+  };
+  var port = ar.port || 9485;
+  var host = br.server || window.location.hostname;
+
+  var connect = function(){
+    var connection = new WebSocket('ws://' + host + ':' + port);
+    connection.onmessage = function(event){
+      if (ar.disabled) return;
+      var message = event.data;
+      var reloader = reloaders[message] || reloaders.page;
+      reloader();
+    };
+    connection.onerror = function(){
+      if (connection.readyState) connection.close();
+    };
+    connection.onclose = function(){
+      window.setTimeout(connect, 1000);
+    };
+  };
+  connect();
+})();
+
 require.register("app", function(exports, require, module) {
 var editor = ace.edit('game-rb-editor');
 editor.setTheme('ace/theme/monokai');
@@ -126,40 +175,39 @@ var handleterminalInput = function(event) {
     }
 };
 
-var handleFileLoad = function() {
-    var currentFileContent = editor.getValue();
-    socket.emit('fileLoad', { input: currentFileContent });
-    addToTerminal('Loading game...', 'status');
+var handleFileBuild = function() {
+    handleFileSave();
+    addToTerminal('Build started...', 'status');
 };
 
 var handleFileSave = function() {
     var currentFileContent = editor.getValue();
     socket.emit('fileSave', { fileContent: currentFileContent });
-    addToTerminal('Saving game code...', 'status');
 };
 
-//var socket = io('http://localhost:8888/ruby'),
-var socket = io.connect('http://wotf-cyoa.herokuapp.com:80/ruby'),
+var handleFileLoad = function() {
+    var currentFileContent = editor.getValue();
+    socket.emit('fileLoad', { input: currentFileContent });
+};
+
+var socket = io('http://localhost:8888/ruby'),
     terminal = document.getElementById('terminal'),
     terminalOutputs = document.getElementById('terminal-outputs'),
     terminalInput = document.getElementById('terminal-input'),
-    sourceActionSave = document.getElementById('source-action-save'),
-    sourceActionLoad = document.getElementById('source-action-load');
+    sourceActionBuild = document.getElementById('source-action-build');
 
 terminal.addEventListener('click', function(e) { terminalInput.focus() }, false);
 
 socket.on('connect', function() {
-    addToTerminal('Server connected', 'status');
+    addToTerminal('Server connected.', 'status');
     terminalInput.addEventListener('keypress', handleterminalInput, false);
-    sourceActionSave.addEventListener('click', handleFileSave, false );
-    sourceActionLoad.addEventListener('click', handleFileLoad, false);
+    sourceActionBuild.addEventListener('click', handleFileBuild, false);
 });
 
 socket.on('disconnect', function() {
-    addToTerminal('Server disconnected', 'error');
+    addToTerminal('Server disconnected.', 'error');
     terminalInput.removeEventListener('keypress', handleterminalInput, false);
-    sourceActionSave.removeEventListener('click', handleFileSave, false );
-    sourceActionLoad.removeEventListener('click', handleFileLoad, false);
+    sourceActionBuild.removeEventListener('click', handleFileBuild, false);
 });
 
 socket.on('ready', function(data) {
@@ -181,10 +229,12 @@ socket.on('terminalError', function(data) {
 
 socket.on('fileSaved', function(data) {
     addToTerminal(data.output, 'status');
+    handleFileLoad();
 });
 
 socket.on('fileLoaded', function(data) {
     addToTerminal(data.output, 'status');
+    addToTerminal('Build successful!', 'status');
 });
 
 });
