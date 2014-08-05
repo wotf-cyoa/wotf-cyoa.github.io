@@ -90,55 +90,6 @@
   globals.require.list = list;
   globals.require.brunch = true;
 })();
-(function() {
-  var WebSocket = window.WebSocket || window.MozWebSocket;
-  var br = window.brunch = (window.brunch || {});
-  var ar = br['auto-reload'] = (br['auto-reload'] || {});
-  if (!WebSocket || ar.disabled) return;
-
-  var cacheBuster = function(url){
-    var date = Math.round(Date.now() / 1000).toString();
-    url = url.replace(/(\&|\\?)cacheBuster=\d*/, '');
-    return url + (url.indexOf('?') >= 0 ? '&' : '?') +'cacheBuster=' + date;
-  };
-
-  var reloaders = {
-    page: function(){
-      window.location.reload(true);
-    },
-
-    stylesheet: function(){
-      [].slice
-        .call(document.querySelectorAll('link[rel="stylesheet"]'))
-        .filter(function(link){
-          return (link != null && link.href != null);
-        })
-        .forEach(function(link) {
-          link.href = cacheBuster(link.href);
-        });
-    }
-  };
-  var port = ar.port || 9485;
-  var host = br.server || window.location.hostname;
-
-  var connect = function(){
-    var connection = new WebSocket('ws://' + host + ':' + port);
-    connection.onmessage = function(event){
-      if (ar.disabled) return;
-      var message = event.data;
-      var reloader = reloaders[message] || reloaders.page;
-      reloader();
-    };
-    connection.onerror = function(){
-      if (connection.readyState) connection.close();
-    };
-    connection.onclose = function(){
-      window.setTimeout(connect, 1000);
-    };
-  };
-  connect();
-})();
-
 require.register("app", function(exports, require, module) {
 var editor = ace.edit('game-rb-editor');
 editor.setTheme('ace/theme/monokai');
@@ -180,8 +131,11 @@ var handleCodeBuild = function() {
     socket.emit('codeBuild', { fileContent: currentFileContent });
 };
 
+console.log('Hash: ' + window.location.hash);
+console.log('Local before: ' + localStorage.getItem('userid'));
 var userid = window.location.hash.replace(/#/, '') || localStorage.getItem('userid') || '';
 localStorage.setItem('userid', userid);
+console.log('Local after: ' + localStorage.getItem('userid'));
 
 // Set socket URL based on environment
 var socketURL = 'http://wotf-cyoa.herokuapp.com:80/ruby';
@@ -218,7 +172,7 @@ socket.on('ready', function(data) {
 
 socket.on('confirmUserid', function(data) {
     localStorage.setItem('userid', data.userid);
-    window.location.hash = data.userid;
+    window.location.replace(data.userid);
 });
 
 socket.on('terminalOutput', function(data) {
