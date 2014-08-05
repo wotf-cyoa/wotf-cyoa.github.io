@@ -172,7 +172,7 @@ socket.on('ready', function(data) {
 
 socket.on('confirmUserid', function(data) {
     localStorage.setItem('userid', data.userid);
-    window.location.replace(data.userid);
+    window.location.replace('#' + data.userid);
 });
 
 socket.on('terminalOutput', function(data) {
