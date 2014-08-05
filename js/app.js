@@ -190,8 +190,12 @@ var handleFileLoad = function() {
     socket.emit('fileLoad', { input: currentFileContent });
 };
 
-//var socket = io('http://localhost:8888/ruby'),
-var socket = io('http://wotf-cyoa.herokuapp.com:80/ruby'),
+// Set socket URL based on environment
+var socketURL = 'http://wotf-cyoa.herokuapp.com:80/ruby';
+if (window.location.origin === 'http://localhost:3333')
+    socketURL = 'http://localhost:8888/ruby';
+
+var socket = io(socketURL),
     terminal = document.getElementById('terminal'),
     terminalOutputs = document.getElementById('terminal-outputs'),
     terminalInput = document.getElementById('terminal-input'),
