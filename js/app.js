@@ -153,7 +153,6 @@ editor.setShowPrintMargin(false);
 editor.setShowInvisibles(true);
 
 var addToTerminal = function(value, type) {
-    if (type === 'output' && value.indexOf('()') > -1) return;
     var classes = 'outputs outputs-' + type;
     value = value.replace(/&/g, '&amp;')
                  .replace(/>/g, '&gt;')
@@ -175,19 +174,10 @@ var handleterminalInput = function(event) {
     }
 };
 
-var handleFileBuild = function() {
-    handleFileSave();
+var handleCodeBuild = function() {
+    var currentFileContent = editor.getValue();
     addToTerminal('Build started...', 'status');
-};
-
-var handleFileSave = function() {
-    var currentFileContent = editor.getValue();
-    socket.emit('fileSave', { fileContent: currentFileContent });
-};
-
-var handleFileLoad = function() {
-    var currentFileContent = editor.getValue();
-    socket.emit('fileLoad', { input: currentFileContent });
+    socket.emit('codeBuild', { fileContent: currentFileContent });
 };
 
 // Set socket URL based on environment
@@ -206,13 +196,13 @@ terminal.addEventListener('click', function(e) { terminalInput.focus() }, false)
 socket.on('connect', function() {
     addToTerminal('Server connected.', 'status');
     terminalInput.addEventListener('keypress', handleterminalInput, false);
-    sourceActionBuild.addEventListener('click', handleFileBuild, false);
+    sourceActionBuild.addEventListener('click', handleCodeBuild, false);
 });
 
 socket.on('disconnect', function() {
     addToTerminal('Server disconnected.', 'error');
     terminalInput.removeEventListener('keypress', handleterminalInput, false);
-    sourceActionBuild.removeEventListener('click', handleFileBuild, false);
+    sourceActionBuild.removeEventListener('click', handleCodeBuild, false);
 });
 
 socket.on('ready', function(data) {
@@ -232,15 +222,10 @@ socket.on('terminalError', function(data) {
     addToTerminal(data.output, 'error');
 });
 
-socket.on('fileSaved', function(data) {
+socket.on('buildStatus', function(data) {
     addToTerminal(data.output, 'status');
-    handleFileLoad();
 });
 
-socket.on('fileLoaded', function(data) {
-    addToTerminal(data.output, 'status');
-    addToTerminal('Build successful!', 'status');
-});
 
 });
 
