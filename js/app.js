@@ -180,6 +180,9 @@ var handleCodeBuild = function() {
     socket.emit('codeBuild', { fileContent: currentFileContent });
 };
 
+var userid = window.location.hash.replace(/#/, '') || localStorage.getItem('userid') || '';
+localStorage.setItem('userid', userid);
+
 // Set socket URL based on environment
 var socketURL = 'http://wotf-cyoa.herokuapp.com:80/ruby';
 if (window.location.origin === 'http://localhost:3333')
@@ -194,6 +197,8 @@ var socket = io(socketURL),
 terminal.addEventListener('click', function(e) { terminalInput.focus() }, false);
 
 socket.on('connect', function() {
+    socket.emit('reportUserid', { userid: localStorage.getItem('userid') });
+
     addToTerminal('Server connected.', 'status');
     terminalInput.addEventListener('keypress', handleterminalInput, false);
     sourceActionBuild.addEventListener('click', handleCodeBuild, false);
@@ -211,6 +216,11 @@ socket.on('ready', function(data) {
     editor.gotoLine(0);
 });
 
+socket.on('confirmUserid', function(data) {
+    localStorage.setItem('userid', data.userid);
+    window.location.hash = data.userid;
+});
+
 socket.on('terminalOutput', function(data) {
     //if (data.output.indexOf('Error') > -1 || data.output.indexOf('undefined') > -1)
     //    addToTerminal(data.output, 'error');
@@ -225,7 +235,6 @@ socket.on('terminalError', function(data) {
 socket.on('buildStatus', function(data) {
     addToTerminal(data.output, 'status');
 });
-
 
 });
 
