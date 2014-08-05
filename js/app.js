@@ -151,7 +151,10 @@ var socket = io(socketURL),
 terminal.addEventListener('click', function(e) { terminalInput.focus() }, false);
 
 socket.on('connect', function() {
-    socket.emit('reportUserid', { userid: localStorage.getItem('userid') });
+    socket.emit('reportUserid', {
+      userid: localStorage.getItem('userid'),
+      authid: localStorage.getItem('authid')
+    });
 
     addToTerminal('Server connected.', 'status');
     terminalInput.addEventListener('keypress', handleterminalInput, false);
@@ -172,6 +175,7 @@ socket.on('ready', function(data) {
 
 socket.on('confirmUserid', function(data) {
     localStorage.setItem('userid', data.userid);
+    localStorage.setItem('authid', data.authid);
     window.location.replace('#' + data.userid);
 });
 
