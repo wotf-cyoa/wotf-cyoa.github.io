@@ -102,6 +102,7 @@ editor.setDisplayIndentGuides(false);
 editor.setHighlightActiveLine(true);
 editor.setShowPrintMargin(false);
 editor.setShowInvisibles(true);
+editor.setReadOnly(true);
 
 var addToTerminal = function(value, type) {
     var classes = 'outputs outputs-' + type;
@@ -131,6 +132,13 @@ var handleCodeBuild = function() {
     socket.emit('codeBuild', { fileContent: currentFileContent });
 };
 
+var handleHashChange = function(event) {
+    if (window.location.hash !== '#' + localStorage.getItem('userid')) {
+        console.log('different!');
+        window.location.reload();
+    }
+};
+
 var userid = window.location.hash.replace(/#/, '') || localStorage.getItem('userid') || '';
 localStorage.setItem('userid', userid);
 
@@ -156,12 +164,14 @@ socket.on('connect', function() {
     addToTerminal('Server connected.', 'status');
     terminalInput.addEventListener('keypress', handleterminalInput, false);
     sourceActionBuild.addEventListener('click', handleCodeBuild, false);
+    editor.setReadOnly(false);
 });
 
 socket.on('disconnect', function() {
     addToTerminal('Server disconnected.', 'error');
     terminalInput.removeEventListener('keypress', handleterminalInput, false);
     sourceActionBuild.removeEventListener('click', handleCodeBuild, false);
+    editor.setReadOnly(true);
 });
 
 socket.on('ready', function(data) {
@@ -173,7 +183,10 @@ socket.on('ready', function(data) {
 socket.on('confirmUserid', function(data) {
     localStorage.setItem('userid', data.userid);
     localStorage.setItem('authid', data.authid);
-    window.location.replace('#' + data.userid);
+    if (window.location.hash !== '#' + data.userid) {
+        window.location.replace('#' + data.userid);
+    }
+    window.addEventListener('hashchange', handleHashChange, false);
 });
 
 socket.on('terminalOutput', function(data) {
