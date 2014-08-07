@@ -134,7 +134,6 @@ var handleCodeBuild = function() {
 
 var handleHashChange = function(event) {
     if (window.location.hash !== '#' + localStorage.getItem('userid')) {
-        console.log('different!');
         window.location.reload();
     }
 };
