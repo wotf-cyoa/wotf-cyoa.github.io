@@ -191,7 +191,8 @@ span.danger {
 
 #terminal .outputs-input:before {
   content: ">> ";
-  width: 27px; }
+  width: 27px;
+  display: inline-block; }
 
 #terminal .outputs-output {
   color: #e6db74; }
@@ -298,7 +299,8 @@ span.danger {
 
 #share .outputs-input:before {
   content: ">> ";
-  width: 27px; }
+  width: 27px;
+  display: inline-block; }
 
 #share .outputs-output {
   color: #e6db74; }
