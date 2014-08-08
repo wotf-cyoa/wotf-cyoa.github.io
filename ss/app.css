@@ -297,7 +297,8 @@ span.danger {
   color: #7a77e0; }
 
 #share .outputs-input:before {
-  content: ">> "; }
+  content: ">> ";
+  width: 27px; }
 
 #share .outputs-output {
   color: #e6db74; }
