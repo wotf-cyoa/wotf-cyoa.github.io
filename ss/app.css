@@ -75,6 +75,9 @@ h1.label {
   text-align: center;
   line-height: 40px; }
 
+a.link-brand {
+  text-decoration: none; }
+
 button {
   display: inline-block;
   margin-bottom: 0;
