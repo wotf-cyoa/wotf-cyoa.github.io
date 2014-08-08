@@ -8,10 +8,26 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
   <link href='http://fonts.googleapis.com/css?family=La+Belle+Aurore' rel='stylesheet' type='text/css'>
   <style>
+  * {
+  }
+  html, body {
+    height: 100%;
+  }
+  html, body, .container, .main {
+    margin: 0;
+    padding: 0;
+  }
   body {
     font-family: 'La Belle Aurore', cursive;
     color: #333;
     background-image: url('images/background.png');
+  }
+  .container {
+    min-height: 100%;
+  }
+  .main {
+    overflow: auto;
+    padding-bottom: 55px;
   }
   a.button {
     width: 150px;
@@ -47,11 +63,10 @@
   }
   footer {
     position: relative;
-    left: 0px;
-    bottom: 0px;
-    height: 100px;
+    height: 55px;
+    margin-top: -55px;
     width: 100%;
-    margin-top: 200px;
+    clear: both;
     text-align: center;
   }
   footer ul {
@@ -82,14 +97,52 @@
     background-position: center center;
     height: 150px;
   }
+  @media all and (max-width: 1221px) {
+    .main {
+      padding-bottom: 110px;
+    }
+    footer {
+      height: 98px;
+      margin-top: -98px;
+    }
+  }
+  @media all and (max-width: 656px) {
+    .main {
+      padding-bottom: 165px;
+    }
+    footer {
+      height: 141px;
+      margin-top: -141px;
+    }
+  }
+  @media all and (max-width: 436px) {
+    body, html, .container, .main {
+      height: auto;
+    }
+    .container {
+      min-height: 0;
+    }
+    .main {
+      padding-bottom: 0;
+    }
+    footer {
+      height: auto;
+      margin-top: 20px;
+    }
+    footer ul li {
+      float: none;
+    }
+  }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Wizards of the Future: Code Your Own Adventure</h1>
-    <h2>The code beckons to you, future wizard.</h2>
-    <div class="wizard"><a href="/sandbox" class="button"></a></div>
-    <h3>Click to enter.</h3>
+    <div class="main">
+      <h1>Wizards of the Future: Code Your Own Adventure</h1>
+      <h2>The code beckons to you, future wizard.</h2>
+      <div class="wizard"><a href="/sandbox" class="button"></a></div>
+      <h3>Click to enter.</h3>
+    </div>
   </div>
   <footer>
     <ul>

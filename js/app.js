@@ -189,9 +189,6 @@ socket.on('confirmUserid', function(data) {
 });
 
 socket.on('terminalOutput', function(data) {
-    //if (data.output.indexOf('Error') > -1 || data.output.indexOf('undefined') > -1)
-    //    addToTerminal(data.output, 'error');
-    //else addToTerminal(data.output, 'output');
     addToTerminal(data.output, 'output');
 });
 

@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>WOTF:CYOA | Sandbox</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="description" content="Wizards of the Future: Code Your Own Adventure">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+  <link href='http://fonts.googleapis.com/css?family=La+Belle+Aurore' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="/ss/app.css">
+</head>
+<body>
+  <div class="container">
+    <h1 id="title">Wizards of the Future: Code Your Own Adventure</h1>
+    <div id="share">
+      <div id="terminal-content">
+        <div id="terminal-outputs"></div>
+        <input id="terminal-input" type="text" autofocus>
+        <span id="terminal-prompt">&gt;&gt; </span>
+      </div>
+    </div>
+  </div>
+  <script src="//cdn.socket.io/socket.io-1.0.0.js"></script>
+  <script>
+  var addToTerminal = function(value, type) {
+      var classes = 'outputs outputs-' + type;
+      value = value.replace(/&/g, '&amp;')
+                   .replace(/>/g, '&gt;')
+                   .replace(/</g, '&lt;')
+                   .replace(/"/g, '&quot;')
+                   .replace(/'/g, '&apos;')
+                   .replace(/\n/g, '<br>');
+      terminalOutputs.innerHTML += '<p class="' + classes + '">' + value + '</p>';
+      terminalInput.scrollIntoView();
+  };
+
+  var handleterminalInput = function(event) {
+      var key = event.which || event.keyCode;
+      if (key == 13) {
+          event.preventDefault();
+          socket.emit('terminalInput', { input: terminalInput.value });
+          addToTerminal(terminalInput.value, 'input');
+          terminalInput.value = '';
+      }
+  };
+
+  // Set socket URL based on environment
+  var socketURL = 'http://wotf-cyoa.herokuapp.com:80/share';
+  if (window.location.origin === 'http://localhost:3333')
+      socketURL = 'http://localhost:8888/share';
+
+  var socket = io(socketURL),
+      terminal = document.getElementById('share'),
+      terminalOutputs = document.getElementById('terminal-outputs'),
+      terminalInput = document.getElementById('terminal-input');
+
+  terminal.addEventListener('click', function(e) { terminalInput.focus() }, false);
+
+  socket.on('connect', function() {
+      addToTerminal('Server connected.', 'status');
+      terminalInput.addEventListener('keypress', handleterminalInput, false);
+  });
+
+  socket.on('disconnect', function() {
+      addToTerminal('Server disconnected.', 'error');
+      terminalInput.removeEventListener('keypress', handleterminalInput, false);
+  });
+
+  socket.on('terminalOutput', function(data) {
+      addToTerminal(data.output, 'output');
+  });
+
+  socket.on('terminalError', function(data) {
+      addToTerminal(data.output, 'error');
+  });
+
+  socket.on('buildStatus', function(data) {
+      addToTerminal(data.output, 'status');
+  });
+
+  socket.on('clearUserid', function() {
+      localStorage.setItem('userid', '');
+      socket.emit('clearUseridDone', localStorage.getItem('userid'));
+  });
+
+  </script>
+</body>
+</html>
