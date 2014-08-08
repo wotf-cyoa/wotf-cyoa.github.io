@@ -190,7 +190,8 @@ span.danger {
   color: #7a77e0; }
 
 #terminal .outputs-input:before {
-  content: ">> "; }
+  content: ">> ";
+  width: 27px; }
 
 #terminal .outputs-output {
   color: #e6db74; }
