@@ -99,6 +99,31 @@ button {
   background-color: white;
   border-color: #5d5d5d; }
 
+.nav-back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 8px 12px;
+  height: 35px; }
+
+.nav-back a {
+  color: white;
+  text-decoration: none;
+  line-height: 20px;
+  height: 100%;
+  display: block;
+  vertical-align: top; }
+  .nav-back a:hover, .nav-back a:active {
+    color: #e6e6e6;
+    text-decoration: underline; }
+
+span.back-arrow {
+  font-size: 200%;
+  line-height: 15px;
+  height: 100%;
+  display: inline-block;
+  vertical-align: top; }
+
 #message-banner {
   text-align: center; }
 
